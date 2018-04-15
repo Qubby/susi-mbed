@@ -46,7 +46,7 @@ int create_data_post() {
 
   // debug();
 
-  g_ctx.psize = 1;  // TLD_SMX_Y;  // Packet length
+  g_ctx.psize = 12; // TLD_SMX_Y;  // Packet length
   g_ctx.pcount = 1; // TLD_SMX_X; // Packet count
   g_ctx.pix = 0;
 
@@ -60,7 +60,7 @@ int process_data_post() {
 
   while (blePeripheral._nRF8001._aciState.data_credit_available > 0) {
     if (g_ctx.pix < g_ctx.pcount) {
-      txCharacteristic.setValue(&(g_ctx.data[2][2]), g_ctx.psize); // 16
+      txCharacteristic.setValue(&(g_ctx.data[0][0]), g_ctx.psize);
       g_ctx.pix++;
     } else
       return 1;

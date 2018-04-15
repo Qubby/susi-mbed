@@ -16,11 +16,15 @@ tald_t gTald({{TLD_DATA_EN, {TLD_ADDR_OUT, TLD_ADDR_OMASK}, 0},
 void vTaldInit() {}
 
 int iTaldSample(sensor_matrix_t &smx) {
-  for (size_t x = 2; x < 3; x++) {
-    for (size_t y = 2; y < 3; y++) {
-      uint16_t u16 = gTald.read(x, y);
-      uint8_t u8 = (u16 * 255.0 / 4095.0);
-      smx[x][y] = (uint8_t)u8;
+  uint32_t u16, ix;
+
+  for (size_t x = 0; x < 6; x++) {
+    for (size_t y = 0; y < 6; y++) {
+      u16 = gTald.read(x, y);
+
+      ix = y * 2;
+      smx[x][ix] = u16 & 0xFF;
+      smx[x][ix + 1] = (u16 >> 8) & 0xFF;
       // smx[x][y] = (uint8_t)(gTald.read(x, y) >> 8);
     }
   }
