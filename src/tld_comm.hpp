@@ -1,4 +1,4 @@
-/** @file tldcomm.hpp
+/** @file tld_comm.hpp
  *  @brief Tald communication module
  *
  *  @author Margo Martis

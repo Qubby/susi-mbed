@@ -1,3 +1,12 @@
+/** @file tald-app.cpp
+ *  @brief Tald application module
+ *
+ *  @author Margo Martis
+ *  @date 30. April 2016
+ *  @version 0.1
+ *  @updated 18.veb 2018
+ */
+
 #include "libtald.hpp"
 #include "soft_clock.hpp"
 #include "tald-app.hpp"
@@ -8,8 +17,8 @@ DigitalOut led2(PC_5);
 
 namespace taldApp {
 
-soft_clk_t l_dataSampleClk(1000);
-soft_clk_t l_dataSubmissionClk(1000);
+soft_clk_t l_dataSampleClk(500);
+// soft_clk_t l_dataSubmissionClk(1000);
 
 sensor_matrix_t l_dataBuffer;
 
@@ -28,7 +37,7 @@ void process() {
   comm::process();
 
   data_sampling_tick();
-  data_submission_tick();
+  // data_submission_tick();
 }
 
 int stateval = 0;
@@ -45,11 +54,11 @@ void data_sampling_tick() {
   }
 }
 
-void data_submission_tick() {
-  if (l_dataSubmissionClk.tick()) {
-    if (dstore::isAvailable) {
-    }
-  }
-}
+// void data_submission_tick() {
+//   if (l_dataSubmissionClk.tick()) {
+//     if (dstore::isAvailable) {
+//     }
+//   }
+// }
 
 } /* susi */

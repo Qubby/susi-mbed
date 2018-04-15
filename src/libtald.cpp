@@ -1,4 +1,4 @@
-/** @file tld.cpp
+/** @file libtld.cpp
  *  @brief Tald module implementation
  *
  *  @author Margo Martis

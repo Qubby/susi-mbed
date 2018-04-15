@@ -1,5 +1,5 @@
-/** @file tldsens.hpp
- *  @brief Tald sensor module
+/** @file libtald.hpp
+ *  @brief Tald module implementation
  *
  *  @author Margo Martis
  *  @date 30. April 2016
@@ -11,16 +11,16 @@
 #define LIBTALD_H
 
 #include "app.h"
-// mux
+// CD demux
 #define TLD_ADDR_OUT PortA
 #define TLD_ADDR_OMASK 0xF0
 
-// demux(CD)
+// ADG mux
 #define TLD_ADDR_IN PortC
 #define TLD_ADDR_IMASK 0x0F
 
-#define TLD_DATA_EN PA_0 // CD DEMUX)
-#define TLD_DATA_IN PA_1 // ADG (MUX)
+#define TLD_DATA_EN PA_1 // CD DEMUX)
+#define TLD_DATA_IN PA_0 // ADG (MUX)
 
 #define TLD_SMX_X 16
 #define TLD_SMX_Y 16
@@ -29,17 +29,20 @@
 namespace libtald {
 
 inline uint8_t tald_addr_obits(unsigned int n) {
-  // n - > 5 4 7 6 => 7 6 5 4
+  // n - > 5 4 7 6 => 7 6 5 4                 // PA6=0 PA7=1 PA4=2 PA5=3
   uint8_t r = ((n & (1 << 0)) << 2);
+
   r |= ((n & (1 << 1)) << 2);
+
   r |= ((n & (1 << 2)) >> 2);
+
   r |= ((n & (1 << 3)) >> 2);
 
   return r << 4;
 }
 
 inline uint8_t tald_addr_ibits(unsigned int n) {
-  // n -> 0 1 2 3 -> 3 2 1 0
+  // n -> 0 1 2 3 -> 3 2 1 0                  //PC0=3 PC1=2 PC2=1 PC3=0
   uint8_t r = ((n & (1 << 0)) << 3);
   r = ((n & (1 << 1)) << 1);
   r = ((n & (1 << 2)) >> 1);
@@ -73,8 +76,8 @@ struct tald_t {
   void selectRow(unsigned int _x) {
     busOut.enableOut = 0;
 
-    _x = tald_addr_obits(_x);
-    if (_x >= 16)
+    _x = 0x08; // tald_addr_obits(_x);
+    if (_x < 16)
       return;
 
     busOut.port = _x;
@@ -84,8 +87,8 @@ struct tald_t {
   }
 
   void selectColumn(unsigned int _y) {
-    _y = tald_addr_ibits(_y);
-    if (_y >= 16)
+    _y = 0x02; // tald_addr_ibits(_y);
+    if (_y < 16)
       return;
 
     busIn.port = _y;
