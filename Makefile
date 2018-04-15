@@ -35,6 +35,8 @@ else
   CC_FLAGS += -DNDEBUG -Os
 endif
 
+$(shell mkdir -p ./BUILD)
+
 .PHONY: all clean lst size
 
 all: $(PROJECT).bin $(PROJECT).hex size
