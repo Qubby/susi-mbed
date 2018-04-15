@@ -28,7 +28,6 @@ void data_submission_tick();
 void init() {
   dstore::init();
   comm::init();
-
   libtald::vTaldInit();
 }
 

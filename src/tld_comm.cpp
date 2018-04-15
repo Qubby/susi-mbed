@@ -60,7 +60,7 @@ int process_data_post() {
 
   while (blePeripheral._nRF8001._aciState.data_credit_available > 0) {
     if (g_ctx.pix < g_ctx.pcount) {
-      txCharacteristic.setValue(&(g_ctx.data[1][1]), g_ctx.psize); // 16
+      txCharacteristic.setValue(&(g_ctx.data[2][2]), g_ctx.psize); // 16
       g_ctx.pix++;
     } else
       return 1;

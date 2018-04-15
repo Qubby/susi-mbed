@@ -28,27 +28,26 @@
 
 namespace libtald {
 
-inline uint8_t tald_addr_obits(unsigned int n) {
-  // n - > 5 4 7 6 => 7 6 5 4                 // PA6=0 PA7=1 PA4=2 PA5=3
-  uint8_t r = ((n & (1 << 0)) << 2);
-
-  r |= ((n & (1 << 1)) << 2);
-
-  r |= ((n & (1 << 2)) >> 2);
-
-  r |= ((n & (1 << 3)) >> 2);
-
-  return r << 4;
+// abcd -> dcba
+inline uint8_t addr_MUX(uint8_t ix) {
+  uint8_t mask = 0;
+  while (ix != 0) {
+    mask <<= 1;
+    mask |= (ix & 1);
+    ix >>= 1;
+  }
+  return mask;
 }
 
-inline uint8_t tald_addr_ibits(unsigned int n) {
-  // n -> 0 1 2 3 -> 3 2 1 0                  //PC0=3 PC1=2 PC2=1 PC3=0
-  uint8_t r = ((n & (1 << 0)) << 3);
-  r = ((n & (1 << 1)) << 1);
-  r = ((n & (1 << 2)) >> 1);
-  r = ((n & (1 << 3)) >> 3);
+// mask = ((ix << 2) & (0b1100)) | ((ix >> 2) & 0b0011);
+// mask = (((mask & 0b1) << 1) | ((mask & 0b10) >> 1) | ((mask & 0b100) << 1) |
+//         ((mask & 0b1000) >> 1));
+// bits: 0 1 2 3. 9 == 0b1001, pin_mask == 0b0110
+// pmap: PA6, PA7, PA4, PA5
+inline uint8_t addr_DeMUX(uint8_t ix) {
+  uint8_t mask = ((ix >> 2) & 0b0011) | ((ix << 2) & 0b1100);
 
-  return r;
+  return mask << 4;
 }
 
 typedef uint8_t sensor_matrix_t[16][16];
@@ -70,13 +69,16 @@ struct bus_in_t {
 };
 
 struct tald_t {
+  //  DeMUX Address bus.
   bus_out_t busOut;
+
+  // MUX Address bus.
   bus_in_t busIn;
 
   void selectRow(unsigned int _x) {
-    busOut.enableOut = 0;
+    // busOut.enableOut = 0;
 
-    _x = 0x08; // tald_addr_obits(_x);
+    _x = addr_DeMUX(_x);
     if (_x < 16)
       return;
 
@@ -87,7 +89,7 @@ struct tald_t {
   }
 
   void selectColumn(unsigned int _y) {
-    _y = 0x02; // tald_addr_ibits(_y);
+    _y = addr_MUX(_y);
     if (_y < 16)
       return;
 
