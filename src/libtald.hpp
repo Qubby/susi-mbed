@@ -96,5 +96,6 @@ struct tald_t {
 
 void vTaldInit();
 int iTaldSample(sensor_matrix_t &);
+
 }
 #endif

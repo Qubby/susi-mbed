@@ -10,10 +10,8 @@
 #define TLD_COMM_H
 
 #include "BLEPeripheral.h"
-
-#include "libtald.hpp"
-
 #include "app.h"
+#include "libtald.hpp"
 
 using namespace libtald;
 

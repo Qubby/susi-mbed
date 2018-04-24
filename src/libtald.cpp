@@ -25,7 +25,6 @@ int iTaldSample(sensor_matrix_t &smx) {
       ix = y * 2;
       smx[x][ix] = u16 & 0xFF;
       smx[x][ix + 1] = (u16 >> 8) & 0xFF;
-      // smx[x][y] = (uint8_t)(gTald.read(x, y) >> 8);
     }
   }
   return 0;

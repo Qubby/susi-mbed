@@ -1,0 +1,34 @@
+
+
+void MakeHeader() {
+  header_t data;
+  data.odbegin = 0;
+  data.ndstart = 0;
+  data.ndend = 0;
+}
+
+int save_data(data_t dstore) {
+  mkdir("/sd/susi", 0777);
+  FILE *fp = fopen("/sd/susi/data.txt", "w");
+  iTaldSample(dstore.data);
+  dstore.timestamp = get_current_timestamp();
+
+  // header_t hdata;
+  // hdata.odbegin, hdata.ndstart, hdata.ndend = 0;
+  // fprintf(fd, "odbegin=%lu,ndstart=%lu,ndend=%lu;\n", hdata.odbegin,
+  //         hdata.ndstart, hdata.ndend);
+  if (fd != NULL)
+    fclose(fd);
+  return 0;
+}
+
+bool isAvailable() {
+  FILE *fp = fopen("/sd/Connected.txt", "w");
+  if (fp != NULL) {
+    store_avail_flag = true;
+    fclose(fp);
+    return store_avail_flag;
+  }
+}
+
+bool dataAvailable() { return data_avail_flag; }

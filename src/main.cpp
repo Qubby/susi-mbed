@@ -6,7 +6,9 @@
  *  @version 0.1
  */
 #include "app.h"
+
 #include "tald-app.hpp"
+
 #include <stdint.h>
 
 // #define TLD_DATA_IN PA_0 // ADG (MUX)
@@ -19,13 +21,16 @@ SPI spi(PB_5, PB_4, PB_3);
 
 // PortOut demux_out(TLD_ADDR_IN1, TLD_ADDR_IMASK1);
 
-void millisStart(void) { SysTick_Config(SystemCoreClock / 1000); }
+void millisStart(void) {
+  SysTick_Config(SystemCoreClock / 1000);
+}
 
 int main() {
-  millisStart();
   serial.baud(115200);
+
+  millisStart();
+
   taldApp::init();
-  // demux_out = 0x0F;
 
   while (1) {
     taldApp::process();

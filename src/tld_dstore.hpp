@@ -1,4 +1,4 @@
-/** @file tlddstor.cpp
+/** @file tlddstore.cpp
  *  @brief Tald data store module
  *
  *  @author Margo Martis
@@ -9,16 +9,13 @@
 #ifndef TLD_DSTORE_H
 #define TLD_DSTORE_H
 
-#include "libtald.hpp"
-
 #include "app.h"
-
-using namespace libtald;
+#include "libtald.hpp"
 
 namespace libtald {
 namespace dstore {
 
-struct data_t {
+struct dstore_data_t {
   uint32_t timestamp;
   sensor_matrix_t data;
 };
@@ -30,16 +27,16 @@ struct header_t {
   uint32_t ndend;
 };
 
-// string Data_to_String(data_t);
-
 void init();
 void process();
 
-int save_data(data_t);
-int load_data(data_t);
+// int save_data(data_t);
+// int load_data(data_t);
 
 bool dataAvailable();
 bool isAvailable();
+
+int writeTestSamples(uint8_t*, size_t);
 
 uint32_t get_current_timestamp();
 }

@@ -8,8 +8,6 @@
 
 #include "tld_comm.hpp"
 
-// using namespace libtald::sense;
-
 namespace libtald {
 namespace comm {
 
